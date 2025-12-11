@@ -1,0 +1,20 @@
+# .gcloudignore - controls what gets uploaded to Cloud Build
+# We need to include the Firebase credentials JSON file
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual envs
+venv/
+env/
+
+# Local files that shouldn't be deployed  
+.git/
+.gitignore
+*.md
+!README.md
+.DS_Store
+
+# But INCLUDE Firebase credentials (not ignoring *.json)

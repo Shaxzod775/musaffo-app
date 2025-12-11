@@ -1,0 +1,8 @@
+*.env
+.env
+*firebase-creds*.json
+*firebase-adminsdk*.json
+__pycache__/
+*.pyc
+.DS_Store
+.vite/

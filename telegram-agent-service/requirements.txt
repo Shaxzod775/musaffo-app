@@ -1,0 +1,8 @@
+telethon
+apscheduler
+python-dotenv
+requests
+pytz
+fastapi
+uvicorn
+aiohttp

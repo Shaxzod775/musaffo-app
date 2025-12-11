@@ -1,0 +1,244 @@
+/**
+ * Custom styles for ChatKit Modal
+ */
+
+/* Основные переменные для ChatKit */
+:root {
+  --chatkit-primary-color: #10a37f;
+  --chatkit-background: #1a1a1a;
+  --chatkit-foreground: #ffffff;
+  --chatkit-border-radius: 12px;
+  --bottom-nav-height: 80px;
+}
+
+/* Стили для скрытия заголовка после первого сообщения */
+.chatkit-header-hidden {
+  display: none !important;
+}
+
+/* Плавная анимация для сообщений */
+.chatkit-message {
+  animation: slideInMessage 0.3s ease-out;
+}
+
+@keyframes slideInMessage {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Стилизация скроллбара для ChatKit */
+.chatkit-container ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chatkit-container ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.chatkit-container ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.chatkit-container ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Стили для кнопки закрытия модального окна */
+.chatkit-modal-close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 1000;
+}
+
+.chatkit-modal-close-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+  :root {
+    --bottom-nav-height: 70px;
+  }
+}
+
+/* Темная тема */
+[data-theme="dark"] {
+  --chatkit-background: #1a1a1a;
+  --chatkit-foreground: #ffffff;
+}
+
+/* Светлая тема */
+[data-theme="light"] {
+  --chatkit-background: #ffffff;
+  --chatkit-foreground: #1a1a1a;
+}
+
+/* Стили для placeholder в светлой теме */
+.chatkit-composer input::placeholder,
+.chatkit-composer textarea::placeholder {
+  color: #666666 !important;
+  opacity: 1;
+}
+
+[data-theme="light"] .chatkit-composer input::placeholder,
+[data-theme="light"] .chatkit-composer textarea::placeholder {
+  color: #666666 !important;
+  opacity: 1;
+}
+
+/* Стили для ChatKit composer */
+.chatkit-composer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  background: var(--chatkit-background);
+}
+
+/* Стили для сообщений пользователя */
+.chatkit-message-user {
+  background: var(--chatkit-primary-color);
+  color: white;
+  border-radius: 18px;
+  padding: 10px 16px;
+  max-width: 80%;
+  margin-left: auto;
+}
+
+/* Стили для сообщений ассистента */
+.chatkit-message-assistant {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--chatkit-foreground);
+  border-radius: 18px;
+  padding: 10px 16px;
+  max-width: 80%;
+}
+
+/* Стили для кнопок быстрых промптов */
+.chatkit-prompt-button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: var(--chatkit-foreground);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chatkit-prompt-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Анимация появления модального окна */
+@keyframes slideUpModal {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.chatkit-modal-enter {
+  animation: slideUpModal 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Анимация закрытия модального окна */
+@keyframes slideDownModal {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.chatkit-modal-exit {
+  animation: slideDownModal 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Стили для загрузки файлов */
+.chatkit-attachment-preview {
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 200px;
+  margin: 8px 0;
+}
+
+/* Индикатор печатания */
+.chatkit-typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 8px;
+}
+
+.chatkit-typing-dot {
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  animation: typingBounce 1.4s infinite ease-in-out;
+}
+
+.chatkit-typing-dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.chatkit-typing-dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes typingBounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+/* Стили для кода в сообщениях */
+.chatkit-message code {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.chatkit-message pre {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+
+.chatkit-message pre code {
+  background: none;
+  padding: 0;
+}

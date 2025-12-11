@@ -1,0 +1,45 @@
+# Environment
+.env
+venv/
+env/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Telegram session files
+*.session
+*.session-journal
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+processed_posts.db
+
+# Media downloads
+media/
+
+# Logs
+*.log
+bot.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
