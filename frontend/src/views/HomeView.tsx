@@ -16,6 +16,7 @@ interface Props {
     aqiData: AirQualityData;
     aqiLoading?: boolean;
     news: NewsItem[];
+    newsLoading?: boolean;
     stats?: Stats;
     statsLoading?: boolean;
     setActiveTab: (tab: Tab) => void;
@@ -29,6 +30,7 @@ const HomeView: React.FC<Props> = ({
     aqiData,
     aqiLoading = false,
     news,
+    newsLoading = false,
     stats,
     statsLoading = false,
     setActiveTab,
@@ -123,16 +125,34 @@ const HomeView: React.FC<Props> = ({
                 <div>
                     <h2 className="text-lg font-bold text-[#1F2937] mb-3 px-1">{t('news_title')}</h2>
                     <div className="space-y-4 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
-                        {news.map(item => (
-                            <div key={item.id} onClick={() => onNewsClick(item)} className="bg-white p-5 card-radius shadow-soft flex flex-col gap-3 active:bg-gray-50 transition-colors cursor-pointer hover:shadow-md">
-                                <div className="flex justify-between items-start">
-                                    <span className="bg-[#40A7E3]/10 text-[#40A7E3] px-2 py-1 rounded-md text-[10px] font-bold uppercase">{item.tag}</span>
-                                    <span className="text-[#9CA3AF] text-[10px]">{item.time}</span>
+                        {newsLoading ? (
+                            // Skeleton loading
+                            [...Array(4)].map((_, index) => (
+                                <div key={index} className="bg-white p-5 card-radius shadow-soft flex flex-col gap-3 animate-pulse">
+                                    <div className="flex justify-between items-start">
+                                        <div className="bg-[#E5E7EB] h-5 w-16 rounded-md"></div>
+                                        <div className="bg-[#E5E7EB] h-3 w-20 rounded"></div>
+                                    </div>
+                                    <div className="bg-[#E5E7EB] h-4 w-full rounded"></div>
+                                    <div className="bg-[#E5E7EB] h-4 w-3/4 rounded"></div>
+                                    <div className="space-y-2">
+                                        <div className="bg-[#E5E7EB] h-3 w-full rounded"></div>
+                                        <div className="bg-[#E5E7EB] h-3 w-5/6 rounded"></div>
+                                    </div>
                                 </div>
-                                <h3 className="font-bold text-[#1F2937] text-sm leading-snug">{item.title}</h3>
-                                <p className="text-xs text-[#4B5563] leading-relaxed">{item.summary}</p>
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            news.map(item => (
+                                <div key={item.id} onClick={() => onNewsClick(item)} className="bg-white p-5 card-radius shadow-soft flex flex-col gap-3 active:bg-gray-50 transition-colors cursor-pointer hover:shadow-md">
+                                    <div className="flex justify-between items-start">
+                                        <span className="bg-[#40A7E3]/10 text-[#40A7E3] px-2 py-1 rounded-md text-[10px] font-bold uppercase">{item.tag}</span>
+                                        <span className="text-[#9CA3AF] text-[10px]">{item.time}</span>
+                                    </div>
+                                    <h3 className="font-bold text-[#1F2937] text-sm leading-snug">{item.title}</h3>
+                                    <p className="text-xs text-[#4B5563] leading-relaxed">{item.summary}</p>
+                                </div>
+                            ))
+                        )}
                     </div>
                 </div>
             </div>

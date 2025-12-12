@@ -16,7 +16,7 @@ import SettingsModal from './src/components/SettingsModal';
 import { CheckCircle, Loader2 } from 'lucide-react';
 import { useLanguage } from './src/context/LanguageContext';
 import ChatKitModal from './src/components/ChatKitModal';
-import { projectsApi, donationsApi, votingApi, statsApi } from './src/services/api';
+import { projectsApi, donationsApi, votingApi, statsApi, newsApi } from './src/services/api';
 import HealthRecommendations from './src/components/HealthRecommendations';
 import { useTelegram } from './src/hooks/useTelegram';
 
@@ -107,13 +107,51 @@ const App: React.FC = () => {
         }
     }, [isTelegramWebApp, tgUser]);
 
-    // News with translations
-    const MOCK_NEWS: NewsItem[] = [
-        { id: '1', title: t('news_1_title'), summary: t('news_1_summary'), source: 'Gazeta.uz', time: '2 ' + t('news_time_hours_ago'), tag: 'Gov' },
-        { id: '2', title: t('news_2_title'), summary: t('news_2_summary'), source: 'Uzhydromet', time: '30 ' + t('news_time_minutes_ago'), tag: 'Global' },
-        { id: '3', title: t('news_3_title'), summary: t('news_3_summary'), source: 'WHO Report', time: '5 ' + t('news_time_hours_ago'), tag: 'Global' },
-        { id: '4', title: t('news_4_title'), summary: t('news_4_summary'), source: 'Kun.uz', time: '1 ' + t('news_time_days_ago'), tag: 'Tech' },
-    ];
+    // News state
+    const [news, setNews] = useState<NewsItem[]>([]);
+    const [isLoadingNews, setIsLoadingNews] = useState(true);
+
+    // Helper function to calculate time ago
+    const getTimeAgo = (timestamp: any): string => {
+        const now = new Date();
+        let then: Date;
+
+        // Handle Firebase Timestamp object format
+        if (timestamp && typeof timestamp === 'object' && timestamp._seconds) {
+            then = new Date(timestamp._seconds * 1000);
+        } else if (timestamp && typeof timestamp === 'object' && timestamp.seconds) {
+            then = new Date(timestamp.seconds * 1000);
+        } else {
+            then = new Date(timestamp);
+        }
+
+        const diffMs = now.getTime() - then.getTime();
+
+        // Handle invalid or future dates
+        if (isNaN(diffMs) || diffMs < 0) {
+            return `1 ${t('news_time_hours_ago')}`;
+        }
+
+        const diffMinutes = Math.floor(diffMs / (1000 * 60));
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffDays = Math.floor(diffHours / 24);
+
+        if (diffDays > 0) {
+            return `${diffDays} ${t('news_time_days_ago')}`;
+        } else if (diffHours > 0) {
+            return `${diffHours} ${t('news_time_hours_ago')}`;
+        } else {
+            return `${Math.max(1, diffMinutes)} ${t('news_time_minutes_ago')}`;
+        }
+    };
+
+    // Transform news with current language
+    const transformedNews: NewsItem[] = news.map(item => ({
+        ...item,
+        title: item.translations?.[language]?.title || item.translations?.ru?.title || '',
+        summary: item.translations?.[language]?.summary || item.translations?.ru?.summary || '',
+        time: getTimeAgo(item.timestamp)
+    }));
 
     // Load donation status and project contributions from API on mount
     useEffect(() => {
@@ -276,6 +314,16 @@ const App: React.FC = () => {
         }
     };
 
+    // Fetch news function
+    const fetchNews = async () => {
+        try {
+            const data = await newsApi.getAll();
+            setNews(data);
+        } catch (error) {
+            console.error('Failed to load news:', error);
+        }
+    };
+
     // Load all data in parallel on mount - ONLY ONCE
     const dataLoadedRef = React.useRef(false);
 
@@ -288,18 +336,21 @@ const App: React.FC = () => {
             setAqiLoading(true);
             setStatsLoading(true);
             setIsLoadingProjects(true);
+            setIsLoadingNews(true);
 
             // Fetch all data in parallel
             await Promise.all([
                 fetchAQI(),
                 fetchStats(),
-                fetchProjects()
+                fetchProjects(),
+                fetchNews()
             ]);
 
             // End all loading states
             setAqiLoading(false);
             setStatsLoading(false);
             setIsLoadingProjects(false);
+            setIsLoadingNews(false);
         };
 
         loadAllData();
@@ -453,7 +504,8 @@ const App: React.FC = () => {
                     <HomeView
                         aqiData={aqiData}
                         aqiLoading={aqiLoading}
-                        news={MOCK_NEWS}
+                        news={transformedNews}
+                        newsLoading={isLoadingNews}
                         stats={stats || undefined}
                         statsLoading={statsLoading}
                         setActiveTab={handleTabChange}

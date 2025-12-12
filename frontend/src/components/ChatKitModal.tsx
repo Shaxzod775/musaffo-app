@@ -39,8 +39,8 @@ const ChatKitModal: React.FC<ChatKitModalProps> = ({
   // Конфигурация ChatKit
   const chatkit = useChatKit({
     api: {
-      // url: `https://musaffo-api-242593050011.europe-west1.run.app/api/chatkit`,
-      url: `http://localhost:8000/api/chatkit`,
+      url: `https://musaffo-api-242593050011.europe-west1.run.app/api/chatkit`,
+      // url: `http://localhost:8000/api/chatkit`,
       // domainKey используется только для production
       // В локальной разработке можно оставить пустым или использовать placeholder
       domainKey: 'domain_pk_6930214f612081939acaa38d1a5e82cb03e55b5a21a28b95',
@@ -185,7 +185,7 @@ const ChatKitModal: React.FC<ChatKitModalProps> = ({
           right: 0,
           bottom: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          zIndex: 39,  // Ниже модального окна и footer'а
+          zIndex: 55,  // Выше footer'а (z-50), ниже модального окна (z-60)
           opacity: isOpen ? 1 : 0,
           transition: 'opacity 0.3s ease-in-out',
           pointerEvents: isOpen ? 'auto' : 'none',
@@ -193,27 +193,30 @@ const ChatKitModal: React.FC<ChatKitModalProps> = ({
         onClick={onClose}
       />
 
-      {/* Модальное окно с анимацией из-под footer */}
+      {/* Модальное окно с анимацией снизу поверх footer */}
       <div
         ref={modalRef}
         className="chatkit-modal-container"
         style={{
           position: 'fixed',
-          top: '5%',
-          left: '50%',
+          top: '3%',
+          left: 0,
+          right: 0,
           transform: isOpen
-            ? 'translateX(-50%) translateY(0)'
-            : 'translateX(-50%) translateY(calc(100% + 100px))',  // Уходит под footer
-          width: 'min(800px, calc(100% - 40px))',  // Максимум 800px или 100% минус отступы
-          bottom: '100px',  // Над footer'ом (высота footer ~80px + отступ)
+            ? 'translateY(0)'
+            : 'translateY(120%)',  // Уходит вниз за экран
+          bottom: 0,  // До самого низа экрана
           backgroundColor: backgroundColor,
-          zIndex: 40,  // Ниже footer'а (footer z-50)
+          zIndex: 60,  // Выше footer'а (footer z-50)
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
-          transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
-          borderRadius: '20px',
+          transition: 'transform 0.5s cubic-bezier(0.32, 0.72, 0, 1)',  // Плавная анимация как в iOS
+          boxShadow: '0 -4px 30px rgba(0, 0, 0, 0.2)',
+          borderTopLeftRadius: '24px',
+          borderTopRightRadius: '24px',
+          borderBottomLeftRadius: 0,
+          borderBottomRightRadius: 0,
         }}
         role="dialog"
         aria-modal="true"

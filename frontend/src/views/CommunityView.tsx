@@ -528,7 +528,7 @@ const CommunityView: React.FC<Props> = ({ user, projects, setActiveTab, onInitia
                             <div className="bg-white card-radius p-5 shadow-soft mt-4">
                                 <h3 className="font-bold text-[#1F2937] mb-4 flex items-center gap-2">
                                     <FileText size={18} className="text-[#40A7E3]" />
-                                    Мои жалобы
+                                    {t('my_complaints')}
                                 </h3>
                                 <div className="space-y-3">
                                     {complaintsLoading ? (
@@ -541,7 +541,7 @@ const CommunityView: React.FC<Props> = ({ user, projects, setActiveTab, onInitia
                                                 <div className="flex items-start justify-between">
                                                     <div className="flex-1">
                                                         <p className="text-sm font-medium text-[#1F2937]">
-                                                            {complaint.analysis?.violation_name || 'Жалоба отправлена'}
+                                                            {complaint.analysis?.violation_name || t('complaint_submitted')}
                                                         </p>
                                                         <p className="text-xs text-[#9CA3AF] mt-1">
                                                             {new Date(complaint.created_at).toLocaleDateString('ru-RU', {
@@ -562,9 +562,9 @@ const CommunityView: React.FC<Props> = ({ user, projects, setActiveTab, onInitia
                                                         {complaint.status === 'pending' && <Clock size={12} />}
                                                         {complaint.status === 'confirmed' && <CheckCircle size={12} />}
                                                         {complaint.status === 'rejected' && <XCircle size={12} />}
-                                                        {complaint.status === 'pending' && 'На рассмотрении'}
-                                                        {complaint.status === 'confirmed' && 'Подтверждено'}
-                                                        {complaint.status === 'rejected' && 'Отклонено'}
+                                                        {complaint.status === 'pending' && t('status_pending')}
+                                                        {complaint.status === 'confirmed' && t('status_confirmed')}
+                                                        {complaint.status === 'rejected' && t('status_rejected')}
                                                     </div>
                                                 </div>
                                             </div>

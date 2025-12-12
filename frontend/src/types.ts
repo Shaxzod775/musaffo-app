@@ -56,13 +56,30 @@ export interface EcoProduct {
   category: 'Purifier' | 'Mask' | 'Monitor' | 'Plants';
 }
 
+export interface NewsTranslation {
+  title: string;
+  summary: string;
+  content: string[];
+}
+
+export interface NewsTranslations {
+  ru: NewsTranslation;
+  uz: NewsTranslation;
+  en: NewsTranslation;
+}
+
 export interface NewsItem {
   id: string;
-  title: string;
-  summary: string; // AI Summarized text
   source: string;
-  time: string;
   tag: 'Gov' | 'Global' | 'Tech';
+  imageUrl: string;
+  translations: NewsTranslations;
+  timestamp: string;
+  createdAt: string;
+  // Computed fields for display
+  title?: string;
+  summary?: string;
+  time?: string;
 }
 
 export interface ChatMessage {

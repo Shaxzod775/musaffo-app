@@ -187,12 +187,12 @@ const AirQualityGauge: React.FC<GaugeProps> = ({ data, isLoading = false, onReco
   };
 
   const getStatusStyles = (aqi: number) => {
-    if (aqi <= 50) return { color: colors.green, label: t('aqi_status_good') };
-    if (aqi <= 100) return { color: colors.yellow, label: t('aqi_status_moderate') };
-    if (aqi <= 150) return { color: colors.orange, label: t('aqi_status_sensitive') };
-    if (aqi <= 200) return { color: colors.red, label: t('aqi_status_unhealthy') };
-    if (aqi <= 300) return { color: colors.purple, label: t('aqi_status_very_unhealthy') };
-    return { color: colors.maroon, label: t('aqi_status_hazardous') };
+    if (aqi <= 50) return { color: colors.green, label: t('aqi_status_good'), desc: t('aqi_desc_good') };
+    if (aqi <= 100) return { color: colors.yellow, label: t('aqi_status_moderate'), desc: t('aqi_desc_moderate') };
+    if (aqi <= 150) return { color: colors.orange, label: t('aqi_status_sensitive'), desc: t('aqi_desc_sensitive') };
+    if (aqi <= 200) return { color: colors.red, label: t('aqi_status_unhealthy'), desc: t('aqi_desc_unhealthy') };
+    if (aqi <= 300) return { color: colors.purple, label: t('aqi_status_very_unhealthy'), desc: t('aqi_desc_very_unhealthy') };
+    return { color: colors.maroon, label: t('aqi_status_hazardous'), desc: t('aqi_desc_hazardous') };
   };
 
   // Recommendations based on AQI level
@@ -291,7 +291,7 @@ const AirQualityGauge: React.FC<GaugeProps> = ({ data, isLoading = false, onReco
     en: 'What to do?'
   };
 
-  const styles = isLoading ? { color: colors.purple, label: t('aqi_status_loading') } : getStatusStyles(data.aqi);
+  const styles = isLoading ? { color: colors.purple, label: t('aqi_status_loading'), desc: t('aqi_advice_loading') } : getStatusStyles(data.aqi);
   const mortalityStat = getMortalityStat(data.aqi);
   const recommendations = getRecommendations(data.aqi);
 
@@ -372,7 +372,7 @@ const AirQualityGauge: React.FC<GaugeProps> = ({ data, isLoading = false, onReco
           <div
             className={`text-[12px] text-[#6B7280] text-center leading-snug transition-opacity duration-500 ${showContent && !isLoading ? 'opacity-100' : 'opacity-50'}`}
           >
-            {data.healthWarning || data.advice}
+            {styles.desc}
           </div>
         </div>
 
