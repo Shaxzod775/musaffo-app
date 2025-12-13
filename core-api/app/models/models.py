@@ -2,18 +2,22 @@ from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
 
-class NewsContent(BaseModel):
-    ru: str
-    uz: str
-    en: str
+class NewsTranslation(BaseModel):
+    title: str
+    summary: str
+    content: List[str]  # Paragraphs of full article
+
+class NewsTranslations(BaseModel):
+    ru: NewsTranslation
+    uz: NewsTranslation
+    en: NewsTranslation
 
 class News(BaseModel):
     id: Optional[str] = None
-    titleKey: str
-    title: str
-    category: str
-    content: NewsContent
+    source: str  # O'zgidromet, Kun.uz, etc.
+    tag: str  # Gov, Global, Tech
     imageUrl: str
+    translations: NewsTranslations
     timestamp: Optional[datetime] = None
     createdAt: Optional[datetime] = None
 

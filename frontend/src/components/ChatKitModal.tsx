@@ -39,7 +39,7 @@ const ChatKitModal: React.FC<ChatKitModalProps> = ({
   // Конфигурация ChatKit
   const chatkit = useChatKit({
     api: {
-      url: `https://musaffo-api-242593050011.europe-west1.run.app/api/chatkit`,
+      url: `https://chatkit-service-242593050011.us-central1.run.app/api/chatkit`,
       // url: `http://localhost:8000/api/chatkit`,
       // domainKey используется только для production
       // В локальной разработке можно оставить пустым или использовать placeholder
